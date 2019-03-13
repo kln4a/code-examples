@@ -1,3 +1,4 @@
 # Code examples: 
 
-- [Multiselect component on Vue with test](/Multiselect)
+- [Компонент множественного выбора + тесты](/Multiselect)
+- [Компонент для отображения каталогов ламп + тесты ](/Autolight)

@@ -1,0 +1,40 @@
+import { shallowMount } from '@vue/test-utils';
+import Multiselect from './Multiselect.vue';
+import flushPromises from 'flush-promises';
+import fetchMock from 'fetch-mock';
+
+const apiUrl = '/api/demo/values';
+
+describe('Multiselect.vue: ajax', () => {
+  beforeEach(() => {
+    fetchMock.get(`${apiUrl}?showCount=1&rows=100`, {
+      data: [
+        {
+          key: 1,
+          value: 'item1',
+        },
+        {
+          key: 2,
+          value: 'item2',
+        }
+      ],
+    });
+  })
+
+  it('render component', async() => {
+    const wrapper = shallowMount(Multiselect, {
+      propsData: {
+        ajaxControl: true,
+        apiUrl,
+      }
+    });
+    wrapper.vm.loadQueryOptions();
+    await flushPromises();
+    expect(wrapper.find('.multiselect__area_choise .multiselect__list').exists()).toBeTruthy();
+    expect(wrapper.findAll('.multiselect__area_choise .multiselect__list .multiselect__item').at(0).find('.multiselect__choose-value').text()).toBe('item1');
+  });
+
+  afterEach(() => {
+    fetchMock.restore();
+  })
+});
